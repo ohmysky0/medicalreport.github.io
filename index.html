@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медицинская форма</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Работа на педиатрическом участке</h1>
+            <div class="flex gap-4">
+                <div class="date-container">
+                    <label class="block text-sm font-medium text-gray-700">Дата:</label>
+                    <input type="date" id="currentDate" class="mt-1 form-input rounded-md shadow-sm">
+                </div>
+                <div class="period-container">
+                    <label class="block text-sm font-medium text-gray-700">Период:</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="periodFrom" placeholder="с" class="mt-1 form-input rounded-md shadow-sm w-24">
+                        <input type="text" id="periodTo" placeholder="по" class="mt-1 form-input rounded-md shadow-sm w-24">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 mb-6">
+            <button id="calculateBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors">
+                Рассчитать
+            </button>
+            <button id="clearBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors">
+                Очистить поля
+            </button>
+            <button id="randomBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
+                Случайные значения
+            </button>
+            <button id="exportPdfBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md transition-colors">
+                Экспорт в PDF
+            </button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border p-2 text-left">Перечень практических умений</th>
+                        <th class="border p-2">№ умен</th>
+                        <th class="border p-2">План</th>
+                        <th class="border p-2">Выполнено</th>
+                        <th class="border p-2">Коэффициент</th>
+                        <th class="border p-2">Коэфф. выполнения</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 1. Число детей принятых в поликлинике -->
+                    <tr class="font-bold">
+                        <td class="border p-2">1. Число детей принятых в поликлинике</td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2">380</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1" data-main="true">
+                        </td>
+                        <td class="border p-2">×</td>
+                        <td class="border p-2">×</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">А) здоровых детей</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">250</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1A" readonly>
+                        </td>
+                        <td class="border p-2">×</td>
+                        <td class="border p-2">×</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-12">- раннего возраста</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">80</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1A1" readonly>
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-12">- старшего возраста</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">70</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1A2" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">Б) «больных» детей</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">130</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1B" readonly>
+                        </td>
+                        <td class="border p-2">×</td>
+                        <td class="border p-2">×</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-12">- с соматическими заболеваниями</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">70</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1B1" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-12">- дети «Д» группы (хроники)</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">60</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="1B2" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <!-- 2. Количество детей, обслуженных на дому -->
+                    <tr class="font-bold">
+                        <td class="border p-2">2. Количество детей, обслуженных на дому</td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2">215</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="2" data-main="true">
+                        </td>
+                        <td class="border p-2">×</td>
+                        <td class="border p-2">×</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">А) с соматическими заболеваниями</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">25</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="2A" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">Б) с инфекционными заболеваниями</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">90</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="2B" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">В) патронаж к новорожденным</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">50</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="2C" readonly>
+                        </td>
+                        <td class="border p-2">3</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">Г) патронаж к детям первого года жизни</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">50</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="2D" readonly>
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <!-- Items 3-20 -->
+                    <tr>
+                        <td class="border p-2">3. Комплексная оценка состояния здоровья детей</td>
+                        <td class="border p-2">3</td>
+                        <td class="border p-2">380</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="3">
+                        </td>
+                        <td class="border p-2">10</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">4. Расчет питания доношенному и недоношенному ребенку 1года жизни</td>
+                        <td class="border p-2">4</td>
+                        <td class="border p-2">80</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="4">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">5. Оценка показателей КАК</td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2">150</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="5">
+                        </td>
+                        <td class="border p-2">3</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">6. Оценка анализов мочи</td>
+                        <td class="border p-2">6</td>
+                        <td class="border p-2">150</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="6">
+                        </td>
+                        <td class="border p-2">3</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">7. Оценка результатов УЗИ внутренних органов, гениталий, щитовидной железы</td>
+                        <td class="border p-2">7</td>
+                        <td class="border p-2">100</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="7">
+                        </td>
+                        <td class="border p-2">4</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">8. Оценка результатов НСГ</td>
+                        <td class="border p-2">8</td>
+                        <td class="border p-2">80</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="8">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">9. Оценка результатов УЗИ тазобедр.суставов</td>
+                        <td class="border p-2">9</td>
+                        <td class="border p-2">80</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="9">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">10. Проведение и оценка результатов аудиологического скрининга</td>
+                        <td class="border p-2">10</td>
+                        <td class="border p-2">80</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="10">
+                        </td>
+                        <td class="border p-2">3</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">11. Оценка R-гр органов грудной клетки</td>
+                        <td class="border p-2">11</td>
+                        <td class="border p-2">25</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="11">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">12. Планирование профилактических прививок</td>
+                        <td class="border p-2">12</td>
+                        <td class="border p-2">250</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="12">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">13. Обоснование противопоказаний к проведению профилактических прививок</td>
+                        <td class="border p-2">13</td>
+                        <td class="border p-2">15</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="13">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">14. Определение физкультурной группы</td>
+                        <td class="border p-2">14</td>
+                        <td class="border p-2">380</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="14">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">15. Оформление листка нетрудоспособности родителям по уходу за болеющим ребенком</td>
+                        <td class="border p-2">15</td>
+                        <td class="border p-2">90</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="15">
+                        </td>
+                        <td class="border p-2">8</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <!-- 16. Оформление мед.документов ребенку (с подпунктами) -->
+                    <tr class="font-bold">
+                        <td class="border p-2">16. Оформление мед.документов ребенку:</td>
+                        <td class="border p-2">16</td>
+                        <td class="border p-2">815</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16" data-main="true">
+                        </td>
+                        <td class="border p-2">×</td>
+                        <td class="border p-2">×</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">- на посещение ДДУ после болезни</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">100</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16A" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">- поступающему в детский сад (026/У)</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">25</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16B" readonly>
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">-на госпитализацию/консультацию (057/У)</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">25</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16C" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">-справка для получения санаторно-курортной путевки</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">25</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16D" readonly>
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">-санаторно-курортная карта (071/У)</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">15</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16E" readonly>
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">- оформление талона амбулаторного пациента (ф 025)</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">595</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16F" readonly>
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2 pl-8">-оформление экстренного извещения (058/У)</td>
+                        <td class="border p-2"></td>
+                        <td class="border p-2">30</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="16G" readonly>
+                        </td>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">17. Оформление рецептов на бесплатное молочное питание (смеси и т.д.)</td>
+                        <td class="border p-2">17</td>
+                        <td class="border p-2">30</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="17">
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">18. Оформление рецептов на льготное лекарственное обеспечение</td>
+                        <td class="border p-2">18</td>
+                        <td class="border p-2">50</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="18">
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">19. Оформление дородовых патронажей к беременным женщинам</td>
+                        <td class="border p-2">19</td>
+                        <td class="border p-2">25</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="19">
+                        </td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="border p-2">20. Оформление ф 30 в программном комплексе «Диспансеризация несовершеннолетних, детей-сирот и опекаемых»</td>
+                        <td class="border p-2">20</td>
+                        <td class="border p-2">50</td>
+                        <td class="border p-2">
+                            <input type="number" class="form-input w-full" data-id="20">
+                        </td>
+                        <td class="border p-2">5</td>
+                        <td class="border p-2 result"></td>
+                    </tr>
+
+                    <!-- Total coefficient row -->
+                    <tr class="font-bold bg-gray-100">
+                        <td colspan="3" class="border p-2">Коэффициент выполненных и недовыполненных умений и навыков</td>
+                        <td class="border p-2">×</td>
+                        <td class="border p-2">100</td>
+                        <td class="border p-2" id="totalCoefficient"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
